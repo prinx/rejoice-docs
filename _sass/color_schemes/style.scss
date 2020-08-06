@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&family=Ubuntu+Mono&display=swap');
+@import 'code.scss';
+
+$content-width : 930px;
+$nav-width: 300px;
+$gutter-spacing: 5rem;
+
+$primary: #f8ad1b !default;
+$secondary: #be0751 !default;
+$link-color: $secondary;
+
+$body-font-family: "Varela Round",
+"system-ui",
+-apple-system,
+Segoe UI,
+Helvetica Neue,
+Arial,
+sans-serif,
+Apple Color Emoji,
+Segoe UI Emoji,
+Segoe UI Symbol;
+
+body,
+.side-bar a {
+    color: #34495e !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $primary !important;
+    font-weight: bold;
+    line-height: 1.8em;
+}
+
+p {
+    line-height: 1.8em;
+}
+
+code,
+pre {
+    font-family: Consolas, "Ubuntu Mono", monospace !important;
+    font-size: .9rem !important;
+    font-weight: 500;
+}
+
+pre {
+    padding: 15px !important;
+}
+
+.color-box {
+    border: 10px solid;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-radius: 3px;
+    margin: 0 5px;
+
+
+    &.white {
+        border-color: white;
+    }
+
+    &.red {
+        border-color: rgb(248, 63, 63);
+    }
+
+
+    &.yellow {
+        border-color: rgb(255, 230, 0);
+    }
+
+    &.green {
+        border-color: rgb(20, 173, 20);
+    }
+
+    &.blue {
+        border-color: rgb(3, 142, 255);
+    }
+
+    &.cyan {
+        border-color: rgb(22, 228, 228);
+    }
+
+    &.black {
+        border-color: black;
+    }
+
+    &.grey {
+        border-color: rgb(161, 161, 161);
+    }
+}
+
+.phone {
+    display: inline-block;
+    margin: 0 30px;
+
+    td {
+        padding: 15px !important;
+    }
+
+    &.phone-console table td {
+        background-color: black;
+        color: white;
+    }
+}
+
+.note {
+    display: inline-block;
+    padding: 5px 20px;
+    margin: 20px 30px;
+    font-size: 13px;
+    // font-family: verdana;
+    border-left: 5px solid;
+    border-radius: 3px;
+
+    &.note-info {
+        border-left-color: rgb(31, 143, 49);
+    }
+
+    &.note-primary {
+        border-left-color: rgba(10, 10, 250, 0.8);
+    }
+
+    &.note-warning {
+        border-left-color: rgba(255, 150, 0, 1);
+    }
+
+    &.note-danger {
+        border-left-color: rgba(255, 10, 0, 1);
+    }
+}
+
+.definition {
+    padding-bottom: 30px;
+}
+
+.definition-title {
+    display: inline;
+    font-weight: bold;
+}
+
+.definition-description {
+    padding: 0 20px;
+    display: inline;
+}
+
+.definition-explanation {
+    padding: 0 20px;
+}
+
+
+@media (min-width: 50rem) {
+    .side-bar {
+        padding-top: 2rem !important;
+    }
+
+    .site-header {
+        border-bottom: none !important;
+        min-height: 100px !important;
+
+        a,
+        a.site-title,
+        & .site-title {
+            padding-right: 1rem !important;
+            padding-left: 1rem !important;
+        }
+
+    }
+
+    .site-logo,
+    div.site-logo {
+        background-position: center;
+    }
+
+    .main-content-wrap {
+        padding-right: 9rem !important;
+    }
+}
