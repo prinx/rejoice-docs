@@ -4,15 +4,15 @@ layout: default
 nav_order: 130
 ---
 
-# Console commands
+<h1>Console commands</h1>
+
 - [Console commands](#console-commands)
-  - [Console commands](#console-commands-1)
-  - [Running the simulator](#running-the-simulator)
-    - [Console simulator](#console-simulator)
-    - [Web simulator](#web-simulator)
-  - [Create a new menu](#create-a-new-menu)
-    - [Directly in the Menus folder](#directly-in-the-menus-folder)
-    - [In a Menu sub-folder](#in-a-menu-sub-folder)
+- [Running the simulator](#running-the-simulator)
+  - [Console simulator](#console-simulator)
+  - [Web simulator](#web-simulator)
+- [Create a new menu](#create-a-new-menu)
+  - [Directly in the Menus folder](#directly-in-the-menus-folder)
+  - [In a Menu sub-folder](#in-a-menu-sub-folder)
 
 
 ## Console commands

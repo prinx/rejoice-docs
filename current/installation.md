@@ -65,10 +65,8 @@ USSD_NETWORK_MNC=01
 USSD_CODE="*000*00#"
 USSD_CONSOLE_BEHAVIOR=
 ```
-<!-- If you have configured your web server to point to point to the public directory of the app, you should not specify `/public/` at the end of the `APP_URL` variable.
-{: .note .note-info } -->
 
-You do not need to enclose string with double-quotes unless it contains special caracters like: `#`, `!` or `=`. You can botice here we enclose the `USSD_CODE` in double-quotes, because without quotes, it will be parsed as comment starter.
+You do not need to enclose string with double-quotes unless it contains special caracters like: `#`, `!` or `=`. You can notice here we enclose the `USSD_CODE` in double-quotes, because it contains a `#` character, which, without quotes, will be parsed as the begining of a comment.
 {: .note .note-warning }
 
 ## Testing the application

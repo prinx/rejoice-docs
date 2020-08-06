@@ -5,6 +5,7 @@ parent: Menus
 nav_order: 41
 ---
 
+<h1>Menu resource</h1>
 
 The menus that will be displayed are defined in the `resources/menus/menus.php` file. It is actually an associative array containing the menus. Each menu is identified by a name (each index of the array). The name will be used when calling the menu to be displayed and also to create the class that will be responsible of the business logic of the menu (the menu entity). It is recommended to use a meaningful name, in lowercase with the word separated with undescore.
 *The only naming rule is: the menu name must not start with a number.*

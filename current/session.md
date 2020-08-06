@@ -4,6 +4,8 @@ layout: default
 nav_order: 80
 ---
 
+<h1>Session</h1>
+
 - [Session driver](#session-driver)
 - [Getting a session variable](#getting-a-session-variable)
 - [Handling the last screen timeout](#handling-the-last-screen-timeout)

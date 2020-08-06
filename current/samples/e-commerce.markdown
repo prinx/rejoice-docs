@@ -5,6 +5,10 @@ parent: Sample applications
 nav_order: 153
 ---
 
+<h1>Simple e-commerce application</h1>
+
+- [Simple e-commerce application](#simple-e-commerce-application)
+  - [Advanced manipulations of the user's responses](#advanced-manipulations-of-the-users-responses)
 
 ## Simple e-commerce application
 

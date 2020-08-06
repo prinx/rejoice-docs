@@ -4,6 +4,17 @@ layout: default
 parent: Menus
 nav_order: 43
 ---
+<h1>Actions</h1>
+
+- [Inserting predefined actions](#inserting-predefined-actions)
+  - [Inserting Back action](#inserting-back-action)
+  - [Inserting Welcome action](#inserting-welcome-action)
+  - [Inserting Paginate forward actions](#inserting-paginate-forward-actions)
+  - [Inserting Paginate back actions](#inserting-paginate-back-actions)
+- [Magic menus](#magic-menus)
+- [Later menu](#later-menu)
+- [Calling a remote USSD application](#calling-a-remote-ussd-application)
+
 
 ## Inserting predefined actions
 The available predefined actions are:

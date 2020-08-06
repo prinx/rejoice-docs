@@ -4,6 +4,8 @@ layout: default
 nav_order: 60
 ---
 
+<h1>User response</h1>
+
 - [User response](#user-response)
   - [Retrieve the user current response](#retrieve-the-user-current-response)
   - [Retrieve a user's previous responses](#retrieve-a-users-previous-responses)

@@ -5,7 +5,9 @@ parent: Menus
 nav_order: 42
 ---
 
-- [Creating the menu entity](#creating-the-menu-entity)
+<h1>Menu class</h1>
+
+- [Creating the menu class](#creating-the-menu-class)
   - [The `message` method](#the-message-method)
   - [The `actions` method](#the-actions-method)
   - [The `validate` method](#the-validate-method)
@@ -136,7 +138,7 @@ class InspiringQuote extends Menu
 ```
 All these methods are optional. Use the one you want when you need it.
 
-### Creating the menu entity 
+### Creating the menu class 
 
 #### The `message` method
 

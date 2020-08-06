@@ -3,5 +3,5 @@ title: Database
 layout: default
 nav_order: 70
 ---
-# Connecting to the database
-- [Connecting to the database](#connecting-to-the-database)
+
+<h1>Connecting to the database</h1>

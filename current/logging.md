@@ -3,6 +3,9 @@ title: Logging
 layout: default
 nav_order: 95
 ---
+
+<h1>Logging</h1>
+
 - [Logging](#logging)
 
 ## Logging

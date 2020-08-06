@@ -4,6 +4,11 @@ layout: default
 nav_order: 110
 ---
 
+<h1>SMS</h1>
+
+- [Sending SMS](#sending-sms)
+  - [Send and exit the script](#send-and-exit-the-script)
+
 ## Sending SMS
 > This is only available if your SMS endpoint expect a post request with parameters `message`, `sender`, `recipient`. If it does not, you can implement your custom SMS
 

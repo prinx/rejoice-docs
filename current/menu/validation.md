@@ -4,6 +4,9 @@ layout: default
 parent: Menus
 nav_order: 44
 ---
+
+<h1>Validation</h1>
+
 - [Validation](#validation)
   - [In the menu entity](#in-the-menu-entity)
     - [USing your custom validation logic](#using-your-custom-validation-logic)

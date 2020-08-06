@@ -4,6 +4,15 @@ layout: default
 nav_order: 100
 ---
 
+<h1>Pagination</h1>
+
+- [Implementing pagination](#implementing-pagination)
+  - [The `Paginator` trait](#the-paginator-trait)
+  - [The paginator required methods](#the-paginator-required-methods)
+    - [`PaginationFetch`](#paginationfetch)
+    - [`PaginationCountAll`](#paginationcountall)
+    - [`itemAction`](#itemaction)
+
 
 ## Implementing pagination
 ### The `Paginator` trait
