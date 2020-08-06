@@ -1,5 +1,5 @@
 <div align="center">
-<img src="assets/images/logo.png">
+<img width="70%" height="70%" src="assets/images/logo.png">
 </div>
 
 You can browse the documentation on the [Rejoice docs site](https://prinx.github.io/rejoice-docs).
@@ -8,4 +8,4 @@ You can browse the documentation on the [Rejoice docs site](https://prinx.github
  Documentation of the rejoice framework
 
 ## License
-MIT License
+[MIT License](LICENSE)
