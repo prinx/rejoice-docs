@@ -9,8 +9,8 @@ Rejoice is a PHP framework for USSD applications. It main goal is to speed up yo
 
 The Rejoice Framework allows you to create simple to complex USSD applications by allowing you to create each menu and have control over everything from what is displayed to controling the users inputs.
 
-## What is USSD?
-USSD stands for **Unstructured Supplementary Service Data**. It is a network protocol allowing mobile operators to send information and communicate with phone users.
+## You said USSD?
+Yes! USSD stands for **Unstructured Supplementary Service Data**. It is a network protocol allowing mobile operators to send information and communicate with phone users.
 
 A USSD application is basically a series of popups (which are called *menus* or *pages* or *screens*) that display or request information from the user via their mobile phones.
 
