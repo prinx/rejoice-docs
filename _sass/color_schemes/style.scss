@@ -20,9 +20,12 @@ Apple Color Emoji,
 Segoe UI Emoji,
 Segoe UI Symbol;
 
-body,
-.side-bar a {
+body {
     color: #34495e !important;
+}
+
+.side-bar a {
+    color: black !important;
 }
 
 h1,
