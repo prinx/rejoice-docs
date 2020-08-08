@@ -17,6 +17,13 @@ nav_order: 9999
     </li>
     <li>
         <div class="definition">
+            <div class="definition-title"><a name="mmi"></a>MMI</div>
+            <div class="definition-description">Man Machine Interface</div>
+            <div class="definition-explanation"></div>
+        </div>
+    </li>
+    <li>
+        <div class="definition">
             <div class="definition-title"><a name="mnc"></a>MNC</div>
             <div class="definition-description">Mobile Network Code</div>
             <div class="definition-explanation">2 digit-code assigned to a mobile operator in every country. It helps, combined with the MCC identifying uniquely the mobile operator. More info <a href="https://mcc-mnc.com">here</a></div>

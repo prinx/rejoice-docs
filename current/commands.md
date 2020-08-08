@@ -222,9 +222,9 @@ You can add a table head:
 $table = $this->table()
     ->head(['ID', 'Name', 'Age'])
     ->body([
-        [ 1, 'Edna',   22 ], // Row
-        [ 2, 'Prince', 25 ], // Row
-        [ 3, 'Edwige', 24 ], // Row
+        [ 1, 'Edna',   22 ],
+        [ 2, 'Prince', 25 ],
+        [ 3, 'Edwige', 24 ],
     ])
     ->show();
 ```
@@ -236,10 +236,10 @@ By default the rows are not separated by a line. To show a separtion line use th
 $table = $this->table()
     ->head(['ID', 'Name', 'Age'])
     ->body([
-        [ 1, 'Edna',   22 ], // 
-        [ 2, 'Prince', 25 ], // Row
+        [ 1, 'Edna',   22 ],
+        [ 2, 'Prince', 25 ],
         $this->tableLine()
-        [ 3, 'Edwige', 24 ], // Row
+        [ 3, 'Edwige', 24 ],
     ])
     ->show();
 ```
@@ -258,11 +258,14 @@ $table->border('default')
 // No border
 $table->border('none')
 
-// 
+// Only top, bottom and header lines
 $table->border('row')
 
-//
+// All borders
 $table->border('all')
+
+// All borders with double-line
+$table->border('all-double')
 
 $table->show();
 ```

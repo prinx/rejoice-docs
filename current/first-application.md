@@ -350,7 +350,7 @@ Calling the `respond` method has precedence on the `message` and `actions` metho
 By calling the `respond` method, we no more need to worry about an actions method is there or not. Rejoice understands that the menu is a last menu and will send the message as soon as the before method is called, ignoring then any other method, including `message` and `actions`.
 {: .note .note-warning }
 
-Another thing about the `respond` method: it allows us to send a response to the user before to start any backend logic. It does not end the script. This is extremely useful. USSD protocol times out very quickly. It does not allow session to be alive for more than at best 180 seconds. Sometimes, the last menu will not show on the user's device because of that. Using the respond method is the first way of mitigating such a behavior. More info about the `respond` method [here](session#killing-the-session-before-running-long-business-logic).
+Another thing about the `respond` method: it allows us to send a response to the user before to start any backend logic. It does not end the script. This is extremely useful. USSD protocol times out very quickly. It does not allow session to be alive for more than at best 180 seconds. Sometimes, the last menu will not show on the user's device because of that. Using the respond method is the first way of mitigating such a behavior. More info about the `respond` method [here](session#discard-session).
 {: .note .note-info }
 
 Congratulations! 🤸‍♀️ You have your first USSD application.

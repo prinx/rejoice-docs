@@ -6,118 +6,145 @@ nav_order: 80
 
 <h1>Session</h1>
 
+- [Introduction](#introduction)
 - [Session driver](#session-driver)
+- [Setting a session variable](#setting-a-session-variable)
 - [Getting a session variable](#getting-a-session-variable)
+- [Checking a session variable](#checking-a-session-variable)
+- [Removing a session variable](#removing-a-session-variable)
 - [Handling the last screen timeout](#handling-the-last-screen-timeout)
-- [Killing the session before running long business logic](#killing-the-session-before-running-long-business-logic)
+- [<a name="discard-session"></a>Discarding the session ourself](#discarding-the-session-ourself)
   - [Send the response and continue the script](#send-the-response-and-continue-the-script)
   - [Send the response and terminate the script](#send-the-response-and-terminate-the-script)
 
+## Introduction
+
+USSD application rely heavily on session. Each request of the user is contained in a session. You will then most of the time be saving and retrieving from the session.
+
+You can configure the session in the `config/session.php` file. But typically, not to commit your credentials to the version control, you will do it in the `.env` file and let Rejoice automatically add it to the `session.php` file for you.
+
 ## Session driver
 
+Rejoice supports two drivers for the sessions: file and database. They are basically where the session data will be saved. For file session, no extra work is required. For database session, you will need to provide the database configuratons. 
 
-## Getting a session variable
-A session is created anytime a user access the application.
+In the .env file:
+```java
+SESSION_DRIVER=file
+```
+Or provide the session database configurations:
+```java
+SESSION_DRIVER=database
+
+SESSION_DB_USER=root
+SESSION_DB_PASS=
+SESSION_DB_HOST=localhost
+SESSION_DB_PORT=3306
+SESSION_DB_NAME=
+```
+
+## Setting a session variable
 
 You can easily save a variable in the session by using the `sessionSave` method.
-You can easily retrieve a variable from the session by using the `sessionGet` or its shortcut `session` method.
+```php
+$this->sessionSave('user_firstname', 'joel');
+```
+
+## Getting a session variable
+
+You can easily retrieve a variable from the session by using the `sessionGet` method.
+```php
+$firstname = $this->sessionGet('user_firstname');
+```
+You can use its shortcut `session` method:
+```php
+$firstname = $this->session('user_firstname');
+```
+
+You can pass a default value (both to `session` and `sessionGet`) that will be returned in case the parameter specify does not exist in the session.
+```php
+$firstname = $this->session('user_firstname', 'Guest');
+```
+
+If the value is not found in session and no default value was passed, a `RuntimeException` will be thrown.
+{: .note .note-warning }
+
+## Checking a session variable
+
 You can easily check if a variable is in the session by using the `sessionHas` method.
+
+```php
+if ($this->sessionHas('user_firstname')) {
+    //
+}
+```
+
+## Removing a session variable
+
 You can easily remove a variable from the session by using the `sessionRemove` method.
 ```php
-
-class EnterAge extends Menu
-{
-  //
-  public function message($userPreviousResponses)
-  {
-      if ($this->sessionHas('a_variable')) {
-        return $this->sessionGet('a_variable')
-      }
-
-      $aVar = 2;
-      $this->sessionSave('a_variable', $aVar);
-      return $aVar;
-  }
-}
+$this->sessionRemove('user_firstname');
 ```
-
-The `session` and `sessionGet` methods support a default value parameter, in case the parameter specify does not exist in the session.
-```php
-class EnterAge extends Menu
-{
-  //
-  public function message($userPreviousResponses)
-  {
-      // Return the session value a_variable or 42 if a_variable is not in session
-      return $this->session('a_variable', 42);
-  }
-}
-```
-
-<div class="note note-warning">
-If the value is not found in session and no default value passed, a RuntimeException is thrown.
-</div>
 
 ## Handling the last screen timeout
-<div class="note note-info">This section applies only to the last message sent to the user by your application</div>
+<div class="note note-info">This section applies only to the last screen sent to the user.</div>
 
-By default, the framework compiles the screen and send it to the user's phone based on the configured `message` and `actions` (both in the menus.php and in the menu entity). But sometimes, the last screen does not show up and the user rather gets a connection MMI error. The usual workaraound is to set the `allow_timeout` parameter to `false` in the `config/app.php` file. This result of this will be, on the last screen, the user will still have the possiblilty to input a response (even though that response will not have any meaning). This is just to make sure the user see the last response no matter how long is the USSD flow. workaround you need to kill the session by yourself to be able to do extra-stuff after the user has received the response on his screen. You can perform operation on database and all the things that take a time after you have sent the response to the user.
+By default, the Rejoice send the menu screen to the user's phone based on the configured `message` and `actions` (both in the menus.php ressource file and in the menu class). But sometimes, the last screen does not show up and the user rather gets a `connection`[`MMI`](glossary#mmi) error.
 
-## Killing the session before running long business logic
-<div class="note note-info">This section applies only to the last message sent to the user by your application</div>
+The usual workaraound is to set the `allow_timeout` parameter to `false` in the `config/app.php` file. This will result to the user being able to input a response (even though that response will not have any meaning and will automatically being discarded by Rejoice). This is just to make sure the user can see the last response no matter the session has timed out or not.
 
-Sometimes, it is uselful, if not required to send the response to the user while continuing a business logic, either because the USSD can timeout or because it is required to be able to call another push request to the user's phone, or calling an API that will take long to respond, etc. In those cases, we will just need to call some functions to send a response to the user, while continuing our business logic.
+## <a name="discard-session"></a>Discarding the session ourself
+
+This section applies only to the last menu screen sent to the user.
+{: .note .note-info }
+
+Rejoice takes care of discarding the session for us on a last screen. But sometimes, it is uselful to discard the session ourself, may it be to send the response to the user and being able to continue a business logic, or we need to send another push request to the user's phone (another USSD-like request passing by the mobile operator), or we need to call an API that will take long to respond or any other reason. Rejoice provides some in-built method to easily do it.
 
 ### Send the response and continue the script
+We need the `respond` method:
 ```php
 class ProcessBalanceRequest extends Menu
 {
-  public function before($userPreviousResponses)
-  {
-    $this->respond('Your request is been processed')
-    
-    // Continue the script (insert in database, call an API, etc.)
-  }
+    public function before($userPreviousResponses)
+    {
+      $this->respond('Your request is been processed');
+      
+      // Continue the script (insert in database, call an API, etc.)
+    }
 }
 ```
-Instead of using the `respond` method, you can use:
+Instead of the `respond` method, we can use:
 ```php
-// Same as `respond`
 $this->respondAndContinue('Your request is been processed')
 ```
 or
 ```php
-// Same as `respond`
 $this->softEnd('Your request is been processed')
 ```
-All the three methods (respond, respondAndContinue, softEnd) are doing the exact same thing. Just choose the one you like.
+The three methods (`respond`, `respondAndContinue`, `softEnd`) are aliases. Just choose the one you like.
 
 ### Send the response and terminate the script
 ```php
 class ProcessBalanceRequest extends Menu
 {
-  public function before($userPreviousResponses)
-  {
-    // Your business logic here
+    public function before($userPreviousResponses)
+    {
+        // Your business logic here
 
-    // Sends the response and terminate the script automatically
-    $this->terminate('Your request is been processed'); 
-    
-    // Anything here will not run
-  }
+        // Sends the response and exit the script automatically
+        $this->terminate('Your request is been processed'); 
+        
+        // Anything here will not run
+    }
 }
 ```
 
-Instead of using the `terminate` method, you can use:
+Instead of the `terminate` method, we can use:
 
 ```php
-// Same as `terminate`
 $this->respondAndExit('Your request is been processed')
 ```
 or
 ```php
-// Same as `terminate`
 $this->hardEnd('Your request is been processed')
 ```
-All the three methods (terminate, respondAndExit, hardEnd) are doing the exact same thing. Just choose the one you like.
-
+The three methods (`terminate`, `respondAndExit`, `hardEnd`) are aliases. Just choose the one you like.
