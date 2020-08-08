@@ -13,6 +13,8 @@ nav_order: 130
 - [Create a new menu](#create-a-new-menu)
   - [Directly in the Menus folder](#directly-in-the-menus-folder)
   - [In a Menu sub-folder](#in-a-menu-sub-folder)
+- [Other console commands](#other-console-commands)
+- [Help on a command](#help-on-a-command)
 
 
 ## Console commands
@@ -55,3 +57,17 @@ php smile menu:new FirstFlow/MyMenu
 
 Will create the class `MyMenu` in a newly created `app/Menus/FirstFlow/MyMenu.php`.
 If the sub-folder does not exist, it will be created.
+
+## Other console commands
+
+You can retrieve any other console command by running:
+```php
+php smile
+```
+
+## Help on a command
+
+To read the help of a command, run:
+```php
+php smile help name_of_the_command
+```
