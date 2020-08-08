@@ -124,11 +124,13 @@ Now open the `EnterUsername.php` file.
 
 In the message method, return the string `"Kindly enter your name"`.
 
-Here the `actions` method is slightly different but actually it is the same as the one in the welcome menu. It is just using a in-built helper method to return a predefined action bag. The `withBack` helper method automatically adds a *go-back* action to the action bag so the user will be able to go back. We can still add your own actions to the `actions` variable.
+Here the `actions` method is slightly different but actually it is the same as the one in the welcome menu. It is just using the in-built `withBack` helper method to return a predefined action bag.
+
+The `withBack` helper method automatically adds a *go-back* action to the action bag so the user will be able to go back. You can still add your own actions to the `actions` variable.
 
 On this menu we are not defining any custom action. This is because on this menu, we are not expecting any *exact* response from the user, as it was with the welcome menu. Here all we know is we want to get the name of the user. The user can input any name they want unlike on the welcome menu where the user must send exactly `1` so that we understand they want to register.
 
-So, the go-back action being the only action on this menu, we can replace the actions method by:
+The *go-back* action being the only action on this menu, we can replace the actions method by:
 
 ```php
 public function actions()
@@ -137,7 +139,7 @@ public function actions()
 }
 ```
 
-`backAction` is another a helper method that returns an action bag containing only a go-back action and it is actually the method used under the hood by the `withBack` method.
+`backAction` is another helper method that returns an action bag containing only a go-back action and it is actually the method used under the hood by the `withBack` method.
 
 ## Default next menu
 On the welcome menu, the next menu to call was specified in the action bag. Here we don't have any custom action, how do we specify the next menu we should call when the user sends a response? We will use the `defaultNextMenu` method of the menu class, which will return the name of the next menu.
@@ -149,10 +151,10 @@ public function defaultNextMenu()
 }
 ```
 
-So on any menu where the user can input something that is exactly defined in the action bag we must set a default menu. If not, the user will get an Invalid input error when the input is different from what is in the action bag. If the response cannot be defined in the action bag, set at `defaultNextMenu` method.
+So on any menu where the user can input something that is not exactly defined in the action bag we must set a default menu. If not, the user will get an Invalid input error when the input is different from what is in the action bag. If the response cannot be defined in the action bag, set at `defaultNextMenu` method.
 
 ## Validation
-One must not be too confortable with the fact that we are letting the user go the next menu no matter what they enter as name. It is true, and the menu class provide a method to validate the user input which is called... `validate`.
+One must not be too confortable with the fact that we are letting the user go to the next menu no matter what they enter as name. It is true, and the menu class provide a method to validate the user input which is called... `validate`.
 
 ```php
 public function validate()
@@ -160,7 +162,7 @@ public function validate()
     return 'alphabetic|min_len:3|max_len:50';
 }
 ```
-We are defining that the response should be all letters, with a minimum length 3 and a maximum of 50. This is the simplest yet equally-powerful way to validate in Rejoice. There are other way to validate. Learn more about the validation [here](menu/validation.md).
+We are defining that the response should be all letters, with at least 3 characters and at most 50. This is the simplest yet equally-powerful way to validate in Rejoice. There are other way to validate. Learn more about the validation [here](menu/validation.md).
 
 ## The saveAs method
 Every response sent by the user is stored in the session. You may want to modify the user's response before it is stored in the session. Let's say here we want to capitalise the name of the user before it is saved. We can easily do it using the `saveAs` method. It takes the user's response as parameter.
@@ -178,7 +180,7 @@ Import the `Str` class with the code:
 ```php
 use Prinx\Str;
 ```
-just after the namespace declaration. Then you can now use the `capitalise` method of the class.
+just after the namespace declaration.Let's its `capitalise` method:
 
 ```php
 public function saveAs($response)
@@ -186,8 +188,7 @@ public function saveAs($response)
     return Str::capitalise($response);
 }
 ```
-
-Our EnterUsername menu looks like:
+To summarize, our EnterUsername menu looks like:
 ```php
 namespace App\Menus;
 
@@ -228,6 +229,7 @@ Let's create that menu.
 
 ### RegisterUser Menu
 
+Create a new menu called `RegisterUser`:
 ```php
 php smile menu:new RegisterUser -x
 ```
@@ -244,17 +246,14 @@ public function message($userPreviousResponses)
 
 The `$userPreviousResponses` argument is an object containing all the previous responses given by the user. You access a specific response by using its `get` method with the name of the menu as argument. Just make sure the name of the menu is the same used in the `next_menu` of the action bag or in the `defaultNextMenu` method.
 
-You can also decide to use the name of the menu class everywhere as menu name.
+There are other slightly different ways of retrieving the user's response. Learn more about it [here](user-response).
+
+This menu will be the last menu we want to show to the user. So it will not have any action on it. We just want to give a feedback to the user that their registration was successful (or not). And the session will be automatically killed. So we will delete the `actions` method.
+
+This is how Rejoice determine that the menu is a last menu. To make a menu the last menu, just create the menu without an `actions` and `defaultNextMenu` method.
 {: .note .note-info }
 
-There are other slightly different ways of retrieving the user's response. Learn more about it [here](user-response)
-
-This menu will be the last menu we want to show to the user. So it doesn't have any action on it. We just want to give a feedback to the user that their registration was successful. And the session will be automatically killed (at the mobile operator's side). So delete the `actions` method.
-
-This is how Rejoice determine that the menu is a last menu. To make a menu the last menu, just create the menu without an `actions` method and `defaultNextMenu`.
-{: .note .note-info }
-
-An `actions` or `defaultNextMenu` method in the menu means the user can perform actions on the menu, and then it is not a last menu. On the last menu, the user cannot perform any action. We just provide a feedback they can read and close the popup.
+An `actions` or `defaultNextMenu` method in the menu means the user can perform actions on the menu, and then it is not a last menu. On the last menu, the user cannot perform any action. They just receive a feedback they can read and close the popup.
 {: .note .note-info }
 
 Our class looks then like:
@@ -265,7 +264,7 @@ class RegisterUser extends Menu
     {
         $name = $this->userPreviousResponses('enter_username');
 
-        // Save the user name in the database here
+        // Save the user name to the database here
 
         return "Thank you {$name}. You have successfully registered.";
     }
@@ -274,9 +273,9 @@ class RegisterUser extends Menu
 
 #### The `before` method
 
-Our application is perfect so far. But we are saving the user's name to the database in the `message` method. This is actually not the recommend. While this is possible, the `message` method's role is not to interact with the database. Let's see some other ways by whichi we can display the last menu. We will make use of the `before` method of the menu class.
+Our application is perfect so far. But we are saving the user's name to the database in the `message` method. This is actually not the recommend. While this is possible, the `message` method's role is not to interact with the database. Let's see some other ways we can display the last menu. We will make use of the `before` method of the menu class.
 
-The `before` method also called `before hook` allows us to run *any* logic we want before the menu is processed and displayed to the user. We will typically do things like saving thing to database will reside there.
+The `before` method also called `before hook` allows us to run *any* logic we want *before* the menu is processed and displayed to the user. We will typically do things like interacting to the database there.
 
 ```php
 class RegisterUser extends Menu
@@ -285,7 +284,7 @@ class RegisterUser extends Menu
     {
         $name = $this->userPreviousResponses('enter_username');
 
-        // Save the user name in the database here
+        // Save the user name to the database here
     }
 
     public function message()
@@ -300,7 +299,7 @@ class RegisterUser extends Menu
 ```
 
 Now let's imagine that we were not able to save the name to the database. We surely don't want to show to the user that the registration was successful! As the `before` method runs *before* any other custom method of the menu, we can do something like:
-
+{: .pt-2 }
 ```php
 class RegisterUser extends Menu
 {
@@ -311,7 +310,7 @@ class RegisterUser extends Menu
         $name = $this->userPreviousResponses('enter_username');
 
         try {
-            // Save the user name in the database here
+            // Save the user name to the database here
         } catch (\Throwable $th) {
             $this->$registrationSuccessful = false;
         }
@@ -325,7 +324,9 @@ class RegisterUser extends Menu
     }
 }
 ```
-We now give to the user the proper feedback. But we can see that apart from senving and sending the message, we are not doing any other thing. We can then move the sending of the message to the `before` method and remove the `message` method. This is possible by using the `respond` method of the menu class.
+We now give to the user the proper feedback. And this is cool. We have a message method that tell us at glance what we expect the user to see and the other logic is in the before method.
+
+But we can see that apart from saving and sending the message, we are not doing anything else. We can go further by moving the sending of the message to the `before` method itself and remove the `message` method. This is possible by using the in-built `respond` method of the menu class.
 
 ```php
 class RegisterUser extends Menu
@@ -335,7 +336,7 @@ class RegisterUser extends Menu
         $name = $this->userPreviousResponses('enter_username');
 
         try {
-            // Save the user name in the database here
+            // Save the user name to the database here
 
             $this->respond("Thank you {$name}. You have successfully registered.");
         } catch (\Throwable $th) {
@@ -345,10 +346,11 @@ class RegisterUser extends Menu
 }
 ```
 
-Calling the `respond` method has precedence on the `message` and `actions` method. It means when it is called, the `message` method is no more called.
+Calling the `respond` method has precedence on the `message` and `actions` method. It means when it is called, the `message` method is no more called.<br>
+By calling the `respond` method, we no more need to worry about an actions method is there or not. Rejoice understands that the menu is a last menu and will send the message as soon as the before method is called, ignoring then any other method, including `message` and `actions`.
 {: .note .note-warning }
 
-Another thing about the `respond` method is that it allows us to send a response to the user before to start any backend logic. It does not end the script. This is extremely useful. USSD protocol times out very quickly. It does not allow session to be alive for more than at best 180 seconds. Sometimes, the last menu will not show on the user's device because of that. Using the respond method is the first way of mitigating such a behavior. More info about the `respond` method [here](session#killing-the-session-before-running-long-business-logic)
+Another thing about the `respond` method: it allows us to send a response to the user before to start any backend logic. It does not end the script. This is extremely useful. USSD protocol times out very quickly. It does not allow session to be alive for more than at best 180 seconds. Sometimes, the last menu will not show on the user's device because of that. Using the respond method is the first way of mitigating such a behavior. More info about the `respond` method [here](session#killing-the-session-before-running-long-business-logic).
 {: .note .note-info }
 
 Congratulations! 🤸‍♀️ You have your first USSD application.
