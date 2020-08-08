@@ -8,15 +8,17 @@ nav_order: 60
 
 - [User response](#user-response)
   - [Retrieve the user current response](#retrieve-the-user-current-response)
-  - [Retrieve a user's previous responses](#retrieve-a-users-previous-responses)
+  - [Retrieve a user's response from any menu](#retrieve-a-users-response-from-any-menu)
   - [Multiple responses](#multiple-responses)
 
 
 ## User response
+
 Most of the times, you need to have access to the user's responses to be able to perform other actions like storing the user provided info in the database, etc.
 
 ### Retrieve the user current response
-In a menu entity you can easily access the current user's response using the method `userResponse`.
+
+In a menu class you can easily access the current user's response using the method `userResponse`.
 
 If you have modified the response by using the `saveAs` method or the `save_as` parameter, you can access the modified response by calling the method `userSavedResponse`. The userResponse method or userTrueResponse will always give the true response that the user gave will userSavedResponse will give the modified response if the response has been modified or the true response if the response has not been modified. 
 
@@ -25,8 +27,9 @@ class EnterAge extends Menu
 {
     public function message()
     {
-        // We suppose the user has entered their name on the previous menu
+        // Retrieve the response gave on the previous menu
         $name = $this->userResponse();
+
         return "Cool {$name}! Kindly enter your age:";
     }
 }
@@ -38,9 +41,9 @@ The user response is automatically injected into the `validate` and `saveAs` met
 // Notice this is the enter name menu and not enter age as the previous one - A response is validated on its menu not another menu.
 class EnterName extends Menu
 {
-    public function validate($userResponse)
+    public function validate($response)
     {
-        if (strlen($userResponse) < 3) {
+        if (strlen($response) < 3) {
             $this->setError('The name must be at least 3 characters');
 
             return false;
@@ -51,14 +54,14 @@ class EnterName extends Menu
 }
 ```
 
-<div class="note note-warning">It is important to always see a menu entity in two parts: <strong>the part that runs before the screen is rendered</strong> to the user and <strong>the part that runs after the user has sent the response</strong>.
+It is important to always see a menu class in two parts: the part that runs **before** the screen is rendered to the user and the part that runs **after** the user has sent the response.<br>Then when you request for the user response in the <em>before-rendering</em> part, you are actually requesting the response giving on the previous screen and based on that response you want to write your logic to render the screen for the current menu. When you request for the user response in the <em>after-response</em> part, you are requesting the response given on the current menu, maybe for validation purpose or to modify the response before saving it, etc.
+{: .note .note-warning }
 
-Then when you request for the user response in the <em>before-rendering</em> part, you are actually requesting the response giving on the previous screen and based on that response you want to write your logic to render the screen for the current menu. When you request for the user response in the <em>after-response</em> part, you are requesting the response given on the current menu, maybe for validation purpose or to modify the response before saving it, etc.</div>
+### Retrieve a user's response from any menu
 
-### Retrieve a user's previous responses
-You can easily have access to the user's response anywhere in a menu class by using the `userPreviousResponses` helper method.
+You can easily have access to the response response of the user on any menu by using the `userPreviousResponses` helper method.
 
-Every response is associated to a menu. You then retrieve a response by passing the menu name to the method.
+You will pass the menu name to the method.
 
 ```php
 public function before()
@@ -69,10 +72,11 @@ public function before()
 }
 ```
 
-Used without argument, the `userPreviousResponses` returns an object that allows us to retrieve the user response.
+Without argument, `userPreviousResponses` returns an object that allows us to retrieve the user response.
+
 The object has two useful methods: `get` and `has`.
-`get` allows us to retrieve a response.
-`has` allows us to check if a response exists (if a response associated to a particular menu exists.)
+`get` allows to retrieve a response.
+`has` allows to check if a response exists (if a response associated to a particular menu exists.)
 
 ```php
 public function before()
@@ -91,22 +95,20 @@ You can pass a second parameter as default value that will be returned if the re
 ```php
 public function before()
 {
-    // Accessing directly
     $name = $this->userPreviousResponses('enter_username', 'dear user');
 
     $this->respond("Thank you {$name}. You have successfully registered.");
 }
 ```
+Or Using the `get` method:
 ```php
 public function before()
 {
-    // Using the "get" method
     $name = $this->userPreviousResponses()->get('enter_username', 'dear user');
 
     $this->respond("Thank you {$name}. You have successfully registered.");
 }
 ```
-
 
 ### Multiple responses
 Sometimes it is useful to have multiple answers for the same menu. Let's take the example of a simple e-commerce application where the user can choose multiple products. To have access to all the chosen products.
@@ -125,4 +127,4 @@ public function before()
 ```
 The `getAll` method returns an array containing the responses of the user on the `choose_product` menu. The first response is at the first index, the second at the second index, etc.
 
-See it in activity in this [sample application](samples/e-commerce.markdown).
+See it in activity in this [sample application](samples/e-commerce).
