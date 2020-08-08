@@ -50,6 +50,9 @@ public function configure()
 
 We initialise our command with a name, a description and a help message.
 
+The name of the command has a colon in-between. This is not compolsory. But using the colon will make the command belong to a namespace. The namespace is the left part of the colon. So here `create` will be the namespace and it will be automatically created. Then later you can create other command under the same namespace.
+{: .note .note-info }
+
 ### Adding arguments
 
 We can add argument by using the `addArgument` method.
