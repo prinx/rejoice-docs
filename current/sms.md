@@ -13,7 +13,6 @@ nav_order: 110
 > This is only available if your SMS endpoint expect a post request with parameters `message`, `sender`, `recipient`. If it does not, you can implement your custom SMS
 
 ```php
-// Anywhere in the menu class
 $this->sendSms('Your request is been processed');
 ```
 
@@ -26,7 +25,6 @@ SMS_SENDER_NAME=MYAPP
 
 If not, you can directly send SMS like this:
 ```php
-// Anywhere in the menu class
 $sms = 'Your request is been processed';
 $receiver = $this->tel();
 $endpoint = 'https://...';
@@ -39,6 +37,5 @@ By default, the receiver is the current user of the application, which can be re
 
 ### Send and exit the script
 ```php
-// Menu entity
 $this->sendSmsAndExit('Your request is been processed')
 ```
