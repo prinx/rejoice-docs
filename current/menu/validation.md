@@ -9,7 +9,7 @@ nav_order: 44
 
 - [Validation](#validation)
   - [In the menu entity](#in-the-menu-entity)
-    - [USing your custom validation logic](#using-your-custom-validation-logic)
+    - [Using your custom validation logic](#using-your-custom-validation-logic)
     - [Using the user response validator instance](#using-the-user-response-validator-instance)
   - [In the menu flow](#in-the-menu-flow)
 - [Validation rules](#validation-rules)
@@ -36,7 +36,7 @@ You can validate directly inside the menu flow in the `resources/menus/menu.php`
 
 ### In the menu entity
 
-#### USing your custom validation logic
+#### Using your custom validation logic
 
 ```php
 class EnterAge extends Menu

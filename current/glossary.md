@@ -33,7 +33,7 @@ nav_order: 9999
         <div class="definition">
             <div class="definition-title"><a name="ussd"></a>USSD</div>
             <div class="definition-description">Unstructured Supplementary Service Data</div>
-            <div class="definition-explanation">Protocol used by mobile operators to implement a real-time communication with a phone user, via phone prompt</div>
+            <div class="definition-explanation">Protocol used by mobile operators to implement a real-time communication with a phone user, via phone prompts.</div>
         </div>
     </li>
 </ol>
