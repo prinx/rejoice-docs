@@ -15,9 +15,7 @@ Yes! [USSD](current/glossary#ussd) stands for **Unstructured Supplementary Servi
 A USSD application is basically a series of popups (which are called *menus* or *pages* or *screens*) that display or request information from the user via their mobile phones.
 
 ## How does it works?
-Unlike a normal web application, a USSD request is created when a user dials a *USSD code* on their phone. A USSD code usually starts with a star (`*`) and ends with a hash (`#`), eg: **\*380#**. The request is forward to the mobile operator. The mobile operator then checks if the shortcode is mapped to an internal application or a third-party application. If an application (proudly developed with Rejoice) is mapped to the shortcode, they create a session and forward the request to the application.
-
-A USSD request is a stateful request. The interaction user-application happens in a session automatically created when the user firstly dialed the USSD code, which ends when either the user has completed the USSD flow or when the user decides to cancel the session themselves.
+Unlike a normal web application, a USSD request is created when a user dials a *USSD code* on their phone. A USSD code usually starts with a star (`*`) and ends with a hash (`#`), eg: **\*380#**. The request is forward to the mobile operator. The mobile operator then checks if the shortcode is mapped to an internal application or a third-party application. If an application (proudly developed with Rejoice) is mapped to the shortcode, they create a session and forward the request to the application. The interaction user-application happens in a session automatically created when the user firstly dialed the USSD code, which ends when either the user has completed the USSD flow or when the user decides to cancel the session themselves.
 
 ## What do I need to know before starting?
 You don't need to know anything apart from Object-Oriented with the PHP language. The rest we will guide you step-by-step to make your best application.
