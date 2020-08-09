@@ -6,14 +6,248 @@ nav_order: 43
 ---
 <h1>Actions</h1>
 
-- [Inserting predefined actions](#inserting-predefined-actions)
-  - [Inserting Back action](#inserting-back-action)
-  - [Inserting Welcome action](#inserting-welcome-action)
-  - [Inserting Paginate forward actions](#inserting-paginate-forward-actions)
-  - [Inserting Paginate back actions](#inserting-paginate-back-actions)
-- [Magic menus](#magic-menus)
-- [Later menu](#later-menu)
-- [Calling a remote USSD application](#calling-a-remote-ussd-application)
+- [The actoin bag](#the-actoin-bag)
+  - [The actions](#the-actions)
+  - [The action trigger](#the-action-trigger)
+  - [Actions properties](#actions-properties)
+    - [The display property](#the-display-property)
+    - [The next_menu property](#the-next_menu-property)
+    - [The save_as property](#the-save_as-property)
+  - [Default next menu](#default-next-menu)
+  - [Predefined next menus - Magic menus](#predefined-next-menus---magic-menus)
+  - [Inserting predefined actions](#inserting-predefined-actions)
+    - [Inserting Back action](#inserting-back-action)
+    - [Inserting Welcome action](#inserting-welcome-action)
+    - [Inserting Paginate forward action](#inserting-paginate-forward-action)
+    - [Inserting Paginate back action](#inserting-paginate-back-action)
+  - [Later menu](#later-menu)
+  - [Calling a remote USSD application](#calling-a-remote-ussd-application)
+
+## Introduction
+
+Actions allowed the user to navigate through your application and allow us to get information from the user.
+
+# The actoin bag
+
+All the actions on a menu are contained in an array called actions bag. The action bag is either returned by the `actions` method of the menu class or is the value of the `actions` index in the menu resource of the specific menu.
+
+## The actions
+
+Each item of the action bag is an action. An action is defined by mapping a trigger to a set o properties.
+
+## The action trigger
+
+The trigger is what the user is supposed to input. It must be a string. The action trigger is usually a number, but you can use any string (inputable by the user) as trigger. The trigger is an index of the actions bag and is mapped to the action which is also an array.
+
+```php
+return [
+    'my_menu_screen' => [
+
+        // Action bag
+        'actions' => [
+
+            // '1' is the trigger
+            '1' => [
+
+                // Action properties
+            ]
+        ]
+    ]
+];
+```
+
+In a menu class:
+```php
+public function actions()
+{
+    // Action bag
+    $actions = [
+
+        // '1' is the trigger
+        '1' => [
+
+            // Action properties
+        ]
+    ];
+
+    return $actions;
+}
+```
+An integer also will work as action trigger and may be useful for automatically reodering the actions whenever you make a change. But note that the first action displayed will be `0`.
+{: .note note-info }
+
+## Actions properties
+
+An action has several properties that allow us to have full control on the navigation in our application and full control over the interaction with the user, especially when requesting information from the user.
+
+These are the properties that an action can take:
+- `display`
+- `next_menu`
+- `save_as`
+
+### The display property
+The display property of the action is an very short text indicating what is the action about. It is the text that will be displayed alongside the action trigger on the user's phone.
+
+```php
+return [
+
+    'payment_option' => [
+        'message' => 'Choose payment mode:',
+
+        'actions' => [
+            '1' => [
+                'display' => 'Mobile money'
+            ],
+            '2' => [
+                'display' => 'Cheque'
+            ],
+            '3' => [
+                'display' => 'Paypal'
+            ]
+        ]
+    ]
+];
+```
+
+This will render as:
+<div class="phone">
+    <table>
+        <tr>
+            <td>Choose payment mode<br><br>1. Mobile Money<br>2. Cheque<br>3. Paypal</td>
+        </tr>
+        <tr>
+            <td><input></td>
+        </tr>
+    </table>
+</div>
+
+### The next_menu property
+The next menu property of an action is the property that allows us to implement navigation through our menus. It configuration is simple as providing the name of the menu we want to go to.
+
+```php
+return [
+
+    'payment_option' => [
+        'message' => 'Choose payment mode',
+
+        'actions' => [
+            '1' => [
+                'display' => 'Mobile money',
+                'next_menu' => 'process_payment',
+            ],
+            '2' => [
+                'display' => 'Cheque'
+                'next_menu' => 'process_payment',
+            ],
+            '3' => [
+                'display' => 'Paypal'
+                'next_menu' => 'process_payment',
+            ]
+        ]
+    ],
+
+    // process_payment menu
+    'process_payment' => [
+        //
+    ]
+];
+```
+
+### The save_as property
+
+The `save_as` property allows us to modify the response of the user before it is saved in the session.
+
+In our previous example, if the user want to choose `Mobile Money`, they will send `1` and it will be saved in the session as `1`. But that is not very useful to as. We will need to know the option chosen by the user in a following menu and `1` is not really meaningful. We can use the `save_as` property to save a custom response when the user will send their response:
+
+```php
+return [
+
+    'payment_option' => [
+        'message' => 'Choose payment mode',
+
+        'actions' => [
+            '1' => [
+                'display' => 'Mobile money',
+                'next_menu' => 'process_payment',
+                'save_as' => 'Pay via mobile money',
+            ],
+            '2' => [
+                'display' => 'Cheque'
+                'next_menu' => 'process_payment',
+                'save_as' => 'Pay via cheque',
+            ],
+            '3' => [
+                'display' => 'Paypal'
+                'next_menu' => 'process_payment',
+                'save_as' => 'Pay via paypal',
+            ]
+        ]
+    ],
+
+    // process_payment menu
+    'process_payment' => [
+        //
+    ]
+];
+```
+
+and now in the `ProcessPayment` menu class we can process show an appropriate menu depending on the user's choice.
+
+```php
+class ProcessPayment extends Menu
+{
+    public function actions()
+    {
+        $paymentOption = $userPreviousResponses->get('payment_option');
+
+        switch ($paymentOption) {
+            case 'pay_via_mobile_money':
+                    // Return a custom action 
+                break;
+            case 'pay_via_cheque':
+                    // Return a custom action 
+                break;
+            case 'pay_via_paypal':
+                    // Return a custom action 
+                break;
+        }
+    }
+}
+```
+
+You can do theses checks in any other menu class method.
+
+## Default next menu
+
+Till now, our examples assume that we want the user to send a specific response (`1`, `2`, `3`, etc.)
+
+On some menus, the response of the user is not known in advance or not exactly known. We then need to allow the user to enter any value that we will validate to check if it complies to the type of the value we want.
+
+You can learn about user response validation [here](validation).
+{: .note .note-info }
+
+On such menus, we can no more define a next menu in the actions bag. So we need a way to allow the user to send any value even though it is not specified in the actions bag. It is possible by defining the property `default_next_menu` directly in the menu (and not in the actions) or by using the `defaultNextMenu` in the menu class.
+
+You configure the `default_next_menu` the exact way the `next_menu` property of an action is configured. It means the `default_next_menu` will just contain the name of the next menu we want to go to. In a menu class, the `defaultNextMenu` will return the name or the next menu. 
+
+## Predefined next menus - Magic menus
+
+Rejoice provides and automatically handles some predefined menu for you to allow you to concentrate on the actual application menus. Those menus are called **magic menus**. Their names starts with double undescore.
+
+These are all the magic menus that Rejoice ships with.
+- `__back` for going back.
+- `__welcome` for returning to the main menu
+- `__end` to return a last menu message (a.k.a end the session)
+- `__same` for displaying the same menu again
+- `__paginate_forward` for implementing a forward pagination (this is used by the [Paginator](#implementing-pagination))
+- `__paginate_back` for implementing a back pagination (this is used by the [Paginator](#implementing-pagination))
+
+Those are the magic menus you can use directly in your application to navigate. There are other magic menus that are reserved to the framework:
+- `__split_next` When a menu overflows, Rejoice automatically detects it and splits it under the hood for you. `__split_next` is the name that will be used to reference any next screen of the splitted menu.
+- `__split_back` will be used to reference any back screen of a splitted menu.
+- `__continue_last_session` The name of the *continue from last session* menu.
+
+<div class="note note-danger">It is highly recommended not to name any of your own menu with double underscore at the beginning!</div>
 
 
 ## Inserting predefined actions
@@ -25,6 +259,7 @@ The available predefined actions are:
 - paginateBackAction
 
 ### Inserting Back action
+
 You can add a go-back action to your actions by using the `__back` next menu or by calling the `$this->backAction()` method.
 
 ```php
@@ -142,7 +377,7 @@ class ProcessBalanceRequest extends Menu
 ```
 The trigger is `00` and the message attached is `Main menu`.
 
-or
+Or
 
 ```php
 namespace App\Menus;
@@ -175,7 +410,7 @@ class ProcessBalanceRequest extends Menu
 The `mainMenuAction` method can take two arguments, the trigger and the display message associated.
 By default the trigger is `00` and the display message is `Main menu`.
 
-### Inserting Paginate forward actions
+### Inserting Paginate forward action
 
 You can add a go-forward-in-pagination action by using the `__paginate_forward` next menu or by calling the `$this->paginateForwardAction()` method.
 
@@ -218,7 +453,9 @@ class ProcessBalanceRequest extends Menu
     }
 }
 ```
-### Inserting Paginate back actions
+
+### Inserting Paginate back action
+
 You can add a go-to-welcome action to your actions by using the `__paginate_back` next menu or by calling the `$this->paginateBackAction()` method.
 
 ```php
@@ -260,23 +497,6 @@ class ProcessBalanceRequest extends Menu
     }
 }
 ```
-
-## Magic menus
-Rejoice offers the possibility of navigating easily from a menu to another especially when it comes to doing things like going back or returning to the welcome menu, etc. Those menus are called magic menus. Their names starts with double undescore. They are automatically configure on any application. These are all the magic menus that Rejoice ships with.
-- `__back` for going back.
-- `__welcome` for returning to the main menu
-- `__end` to return a last menu message (a.k.a end the session)
-- `__same` for displaying the same menu again
-- `__paginate_forward` for implementing a forward pagination (this is used by the [Paginator](#implementing-pagination))
-- `__paginate_back` for implementing a back pagination (this is used by the [Paginator](#implementing-pagination))
-
-Those are the magic menus you can use directly in your application to navigate. There are other magic menus that are reserved to the framework:
-- `__split_next` When a menu overflows, Rejoice automatically detects it and splits it under the hood for you. `__split_next` is the name that will be used to reference any next screen of the splitted menu.
-- `__split_back` will be used to reference any back screen of a splitted menu.
-- `__continue_last_session` The name of the *continue from last session* menu.
-
-
-<div class="note note-danger">It is highly recommended not to name any of your own menu with double underscore at the beginning!</div>
 
 ## Later menu
 
@@ -379,6 +599,7 @@ class EnterUsername extends Menu
 
 ## Calling a remote USSD application
 You can call a remote USSD simply by setting the URL of the USSD application as *next_menu* to an action.
+
 ```php
 // resources/menus/menus.php
 
@@ -389,7 +610,7 @@ return [
         'actions'=> [
             '1' => [
               'display' => 'Get balance',
-              'next_menu' => 'http://address.ip/or/url/to/the/remote/ussd',
+              'next_menu' => 'https://address.to/the/remote/ussd',
             ]
         ]
     ]
@@ -414,7 +635,7 @@ class ChooseOptionScreen extends Menu
         return [
             '1' => [
                 'display' => 'Get balance',
-                'next_menu' => 'http://address.ip/or/url/to/the/remote/ussd',
+                'next_menu' => 'https://address.to/the/remote/ussd',
             ]
         ];
     }
