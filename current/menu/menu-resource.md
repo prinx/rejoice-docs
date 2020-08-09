@@ -43,18 +43,16 @@ return [
         
         'actions' => [
             '1' => [
-                'display' => '',
+                'display'   => '',
                 'next_menu' => '',
-                'validate' => '',
-                'save_as' => ''
+                'validate'  => '',
+                'save_as'   => ''
             ],
         ],
 
         'default_next_menu' => '',
-
-        'validate' => '',
-        
-        'save_as' => ''
+        'validate'          => '',
+        'save_as'           => ''
     ],
 
     //...
@@ -77,7 +75,7 @@ return [
         
         'actions' => [
             '1' => [
-                'display' => 'Register',
+                'display'   => 'Register',
                 'next_menu' => 'enter_username'
             ]
         ]
@@ -93,14 +91,13 @@ return [
             ]
         ],
 
+        'validate'          => 'alphabetic|min_len:3|max_len:50'
         'default_next_menu' => 'register_user',
-
-        'validate' => 'alphabetic|min_len:3|max_len:50'
     ],
 
-  'register_user' => [
-    'message' => '',
-  ],
+    'register_user' => [
+        'message' => '',
+    ],
 ];
 ```
 
