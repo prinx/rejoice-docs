@@ -45,7 +45,6 @@ return [
             '1' => [
                 'display'   => '',
                 'next_menu' => '',
-                'validate'  => '',
                 'save_as'   => ''
             ],
         ],
