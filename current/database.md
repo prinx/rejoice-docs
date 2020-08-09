@@ -76,12 +76,9 @@ public function retrieveUser()
     $id = $this->userPreviousResponses('choose_user');
 
     $statement = $this->db()->prepare("SELECT * FROM users WHERE id = :user_id");
-    $statement->execute([
-        'user_id' => $id
-    ]);
+    $statement->execute(['user_id' => $id]);
 
     $result = $statement->fetch(PDO::FETCH_ASSOC);
-
     $statement->closeCursor();
 
     return $result;
@@ -140,7 +137,6 @@ public function before()
         $this->respond("Your information has been successfully saved.");
     } catch (\Throwable $th) {
         $this->db()->rollBack();       
-        
         $this->respond("An error happened.");
     }
 }

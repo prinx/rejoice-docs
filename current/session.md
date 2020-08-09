@@ -13,7 +13,7 @@ nav_order: 80
 - [Checking a session variable](#checking-a-session-variable)
 - [Removing a session variable](#removing-a-session-variable)
 - [Handling the last screen timeout](#handling-the-last-screen-timeout)
-- [<a name="discard-session"></a>Discarding the session ourself](#discarding-the-session-ourself)
+- [Discarding the session ourself](#discarding-the-session-ourself)
   - [Send the response and continue the script](#send-the-response-and-continue-the-script)
   - [Send the response and terminate the script](#send-the-response-and-terminate-the-script)
 
@@ -25,9 +25,13 @@ You can configure the session in the `config/session.php` file. But typically, n
 
 ## Session driver
 
-Rejoice supports two drivers for the sessions: file and database. They are basically where the session data will be saved. For file session, no extra work is required. For database session, you will need to provide the database configuratons. 
+Rejoice supports two drivers for the sessions: file and database. They are basically where the session data will be saved.
+- For file session, no extra configuration is needed.
+- For database session, you will need to provide the database configuratons.
 
-In the .env file:
+No matter which driver you are using, interacting with the session is exactly the same.
+
+You can configure the session in the `.env` file:
 ```java
 SESSION_DRIVER=file
 ```
@@ -35,19 +39,22 @@ Or provide the session database configurations:
 ```java
 SESSION_DRIVER=database
 
-SESSION_DB_USER=root
-SESSION_DB_PASS=
-SESSION_DB_HOST=localhost
-SESSION_DB_PORT=3306
-SESSION_DB_NAME=
+USSD_SESSION_DB_USER=root
+USSD_SESSION_DB_PASS=
+USSD_SESSION_DB_HOST=localhost
+USSD_SESSION_DB_PORT=3306
+USSD_SESSION_DB_NAME=
 ```
 
 ## Setting a session variable
 
 You can easily save a variable in the session by using the `sessionSave` method.
 ```php
-$this->sessionSave('user_firstname', 'joel');
+$this->sessionSave('user_firstname', 'prince');
 ```
+
+You can save arrays in the session.
+{: .note .note-info }
 
 ## Getting a session variable
 
@@ -63,6 +70,10 @@ $firstname = $this->session('user_firstname');
 You can pass a default value (both to `session` and `sessionGet`) that will be returned in case the parameter specify does not exist in the session.
 ```php
 $firstname = $this->session('user_firstname', 'Guest');
+
+// Same as
+
+$firstname = $this->sessionGet('user_firstname', 'Guest');
 ```
 
 If the value is not found in session and no default value was passed, a `RuntimeException` will be thrown.
@@ -92,7 +103,9 @@ By default, the Rejoice send the menu screen to the user's phone based on the co
 
 The usual workaraound is to set the `allow_timeout` parameter to `false` in the `config/app.php` file. This will result to the user being able to input a response (even though that response will not have any meaning and will automatically being discarded by Rejoice). This is just to make sure the user can see the last response no matter the session has timed out or not.
 
-## <a name="discard-session"></a>Discarding the session ourself
+<a name="discard-session"></a>
+
+## Discarding the session ourself
 
 This section applies only to the last menu screen sent to the user.
 {: .note .note-info }
@@ -114,11 +127,11 @@ class ProcessBalanceRequest extends Menu
 ```
 Instead of the `respond` method, we can use:
 ```php
-$this->respondAndContinue('Your request is been processed')
+$this->respondAndContinue('Your request is been processed');
 ```
 or
 ```php
-$this->softEnd('Your request is been processed')
+$this->softEnd('Your request is been processed');
 ```
 The three methods (`respond`, `respondAndContinue`, `softEnd`) are aliases. Just choose the one you like.
 
@@ -141,10 +154,10 @@ class ProcessBalanceRequest extends Menu
 Instead of the `terminate` method, we can use:
 
 ```php
-$this->respondAndExit('Your request is been processed')
+$this->respondAndExit('Your request is been processed');
 ```
 or
 ```php
-$this->hardEnd('Your request is been processed')
+$this->hardEnd('Your request is been processed');
 ```
 The three methods (`terminate`, `respondAndExit`, `hardEnd`) are aliases. Just choose the one you like.
