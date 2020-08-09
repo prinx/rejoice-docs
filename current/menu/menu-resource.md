@@ -34,11 +34,11 @@ The last thing to know about the menus resource file is, unlike the menu classes
 
 ## Format
 ```php
+// resources/menus/menus.php
 
 return [
 
     'menu_name' => [
-        
         'message' => '',
         
         'actions' => [
@@ -48,18 +48,16 @@ return [
                 'validate' => '',
                 'save_as' => ''
             ],
-            '0' => [
-                'display' => 'Back',
-                'next_menu' => '__back'
-            ]
         ],
 
         'default_next_menu' => '',
 
         'validate' => '',
-
+        
         'save_as' => ''
     ],
+
+    //...
 ];
 ```
 
