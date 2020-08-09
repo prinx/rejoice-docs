@@ -122,6 +122,7 @@ This will render as:
 </div>
 
 ### The next_menu property
+
 The next menu property of an action is the property that allows us to implement navigation through our menus. It configuration is simple as providing the name of the menu we want to go to.
 
 ```php
@@ -152,6 +153,35 @@ return [
     ]
 ];
 ```
+
+If you are using menu classes, this syntax assumes that the menu class is directly in the `app/Menus` folder. If the menus is in a sub-folder of the `app/Menus` folder, the folders names will be separated by `::` (two colons).
+
+```php
+// app/Menus/UserProfile/ShowProfile.php
+
+namespace App\Menus\UserProfile;
+
+use App\Menus\Menu;
+
+class ShowProfile extends Menu
+{
+    public function actions()
+    {
+        return [
+            '1' => [
+                'display' => 'Edit Profile',
+                'next_menu' => 'UserProfile::ShowProfile',
+            ],
+            '2' => [
+                'display' => 'Delete profile'
+                'next_menu' => 'UserProfile::DeleteProfile',
+            ],
+        ];
+    }
+}
+```
+
+These assume that classes `ShowProfile` and `DeleteProfile` exist in the `app/Menus/UserProfile` folder.
 
 ### The save_as property
 
@@ -216,6 +246,8 @@ class ProcessPayment extends Menu
 ```
 
 You can do theses checks in any other menu class method.
+
+<a name="default-next-menu"></a>
 
 ## Default next menu
 
