@@ -1,4 +1,4 @@
-> This repo has been move to the [Rejoice Framework](https://github.com/rejoice-framework/docs) organisation.
+> This repo has been moved to the [Rejoice Framework](https://github.com/rejoice-framework/docs) organisation.
 
 <div align="center">
 <img width="400" src="assets/images/logo.png">
